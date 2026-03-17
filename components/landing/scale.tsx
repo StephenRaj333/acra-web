@@ -354,7 +354,7 @@ export function Scale() {
 
         {/* Below 991px: 2-column stat grid, sits below the circles */}
         {!isDesktop && (
-          <div className="grid grid-cols-2 gap-3 mt-8 max-[991px]:gap-6 max-[540px]:grid-cols-1">
+          <div className="grid grid-cols-2 gap-3 mt-8 max-[991px]:gap-6 max-[540px]:grid-cols-1">   
           {stats.map((stat) => (
             <motion.div
               key={stat.value}
