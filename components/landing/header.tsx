@@ -16,6 +16,17 @@ const navItems = [
 export function Header() {
   const [isOpen, setIsOpen] = useState(false)
 
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    const href = e.currentTarget.getAttribute('href')
+    if (href?.startsWith('#')) {
+      e.preventDefault()
+      const element = document.querySelector(href)
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      }
+    } 
+  }
+
   return (
     <motion.header
       initial={{ y: -100, opacity: 0 }}
@@ -52,7 +63,8 @@ export function Header() {
               <motion.a
                 key={item.label}
                 href={item.href}
-                className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors relative group"
+                onClick={handleNavClick}
+                className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors relative group cursor-pointer"
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 + 0.3 }}
@@ -104,8 +116,11 @@ export function Header() {
               <a
                 key={item.label}
                 href={item.href}
-                className="block px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors"
-                onClick={() => setIsOpen(false)}
+                className="block px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors cursor-pointer"
+                onClick={(e) => {
+                  handleNavClick(e)
+                  setIsOpen(false)
+                }}
               >
                 {item.label}
               </a>

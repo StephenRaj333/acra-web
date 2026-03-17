@@ -235,7 +235,12 @@ export default function DashboardPage() {
               </div>
 
               {/* Table */}
-              <div className="overflow-x-auto">
+              <div className="overflow-x-auto" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+                <style>{`
+                  div::-webkit-scrollbar { 
+                    display: none;
+                  }
+                `}</style>
                 <table className="w-full">
                   <thead>
                     <tr className="border-b border-border bg-muted/50">
