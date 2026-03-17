@@ -1,10 +1,13 @@
 "use client"
 
+import Head from "next/head"
 import { useState } from "react"
 import { motion } from "framer-motion"
 import { Eye, EyeOff, Lock, Mail, AlertCircle, CheckCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useRouter } from "next/router"
+
+const SITE_URL = "https://acra-web.vercel.app";
 
 export default function LoginPage() {
   const router = useRouter()
@@ -57,7 +60,21 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/30 flex items-center justify-center p-4 relative overflow-hidden">
+    <>
+      <Head>
+        <title>Login | AKRA Consultants</title>
+        <meta name="description" content="Secure login portal for AKRA Consultants administrators and team members." />
+        <meta name="robots" content="noindex, nofollow" />
+        <link rel="canonical" href={`${SITE_URL}/login`} />
+
+        {/* Open Graph */}
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={`${SITE_URL}/login`} />
+        <meta property="og:title" content="Login | AKRA Consultants" />
+        <meta property="og:description" content="Secure login portal for AKRA Consultants." />
+        <meta property="og:site_name" content="AKRA Consultants" />
+      </Head>
+      <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/30 flex items-center justify-center p-4 relative overflow-hidden">
       {/* Animated background elements */}
       <motion.div
         className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-full blur-3xl"
@@ -346,5 +363,6 @@ export default function LoginPage() {
         </div>
       </div>
     </div>
+    </>
   )
 }

@@ -223,19 +223,42 @@ export function Testimonial() {
               >
 
                 {/* Icon - Top */}
-                <motion.div 
-                  className="relative flex items-center justify-center w-14 h-14 rounded-2xl mb-4 text-white font-bold text-xl"
-                  style={{
-                    background: pillar.gradient,
-                  }}
-                  animate={{
-                    scale: hoveredPillar === index ? 1.1 : 1,
-                    rotate: hoveredPillar === index ? [0, -5, 5, 0] : 0,
-                  }}
-                  transition={{ duration: 0.4 }}
-                >
-                  <pillar.icon className="w-6 h-6" />
-                </motion.div>
+                <div className="relative mb-5">
+                  {/* Spinning gradient ring */}
+                  <motion.div
+                    className="absolute inset-0 rounded-full"
+                    style={{
+                      background: pillar.gradient,
+                      padding: 2,
+                      borderRadius: "50%",
+                    }}
+                    animate={{
+                      rotate: hoveredPillar === index ? 360 : 0,
+                    }}
+                    transition={{ 
+                      duration: hoveredPillar === index ? 1.2 : 0.4,
+                      ease: "linear",
+                      repeat: hoveredPillar === index ? Infinity : 0,
+                    }}
+                  />
+                  {/* Icon circle */}
+                  <motion.div
+                    className="relative flex items-center justify-center w-14 h-14 rounded-full text-white z-10"
+                    style={{
+                      background: pillar.gradient,
+                      boxShadow: hoveredPillar === index
+                        ? `0 0 20px 4px ${pillar.gradient.includes('#FF0505') ? 'rgba(255,5,5,0.35)' : 'rgba(0,53,227,0.3)'}`
+                        : "none",
+                    }}
+                    animate={{
+                      scale: hoveredPillar === index ? 1.12 : 1,
+                      y: hoveredPillar === index ? -3 : 0,
+                    }}
+                    transition={{ duration: 0.35, type: "spring", stiffness: 300 }}
+                  >
+                    <pillar.icon className="w-6 h-6 drop-shadow" />
+                  </motion.div>
+                </div>
                 
                 {/* Number Badge */}
                 <motion.span 

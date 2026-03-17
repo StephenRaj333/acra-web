@@ -216,7 +216,7 @@ export function About() {
                   </motion.div>
                 </motion.div>
               ))}
-            </div>
+            </div> 
 
             {/* CTA Button */}
             <motion.div
