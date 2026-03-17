@@ -206,7 +206,7 @@ export function About() {
             </p>
 
             {/* Values Grid */}
-            <div className="grid grid-cols-2 gap-4 mb-8">
+            <div className="grid grid-cols-2 gap-4 mb-8 max-[540px]:grid-cols-1">
               {values.map((value, index) => (
                 <motion.div
                   key={value.title}

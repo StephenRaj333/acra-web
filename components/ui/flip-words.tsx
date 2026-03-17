@@ -8,10 +8,12 @@ export function FlipWords({
   words,
   duration = 3000,
   className,
+  gradients,
 }: {
   words: string[]
   duration?: number
-  className?: string
+  className?: string 
+  gradients?: string[]
 }) {
   const [currentWord, setCurrentWord] = useState(words[0])
   const [isAnimating, setIsAnimating] = useState(false)
@@ -61,26 +63,37 @@ export function FlipWords({
           scale: 2,
           position: "absolute",
         }}
+        style={gradients ? {
+          background: gradients[words.indexOf(currentWord)],
+          WebkitBackgroundClip: "text",
+          backgroundClip: "text",
+          WebkitTextFillColor: "transparent",
+          color: "transparent",
+        } : undefined}
         className={cn(
           "inline-block relative text-left px-2",
-          className
+          gradients ? "" : className
         )}
         key={currentWord}
       >
-        {currentWord.split("").map((letter, index) => (
-          <motion.span
-            key={currentWord + index}
-            initial={{ opacity: 0, y: 10, filter: "blur(8px)" }}
-            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-            transition={{
-              delay: index * 0.08,
-              duration: 0.4,
-            }}
-            className="inline-block"
-          >
-            {letter}
-          </motion.span>
-        ))}
+        {gradients ? (
+          currentWord
+        ) : (
+          currentWord.split("").map((letter, index) => (
+            <motion.span
+              key={currentWord + index} 
+              initial={{ opacity: 0, y: 10, filter: "blur(8px)" }}
+              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              transition={{
+                delay: index * 0.08,
+                duration: 0.4,
+              }}
+              className="inline-block"
+            >
+              {letter}
+            </motion.span>
+          ))
+        )}
       </motion.span>
     </AnimatePresence>
   )

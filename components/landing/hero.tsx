@@ -129,8 +129,13 @@ export function Hero() {
             Together, We
             <FlipWords 
               words={["Scale", "Build", "Grow", "Lead"]} 
-              className="text-primary"
-              duration={2500}
+              gradients={[
+                "linear-gradient(150deg, #FF0505 16.04%, #339404 85.56%)",
+                "linear-gradient(140deg, #0035E3 20.33%, #B78600 87.13%)",
+                "linear-gradient(140deg, #9B00E3 20.33%, #B7A800 87.13%)",
+                "linear-gradient(140deg, #00B768 20.33%, #0017E3 87.13%)",
+              ]}
+              duration={1450}   
             />
             <br />
             <span className="text-primary">New Heights</span>
