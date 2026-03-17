@@ -1,6 +1,7 @@
 import Head from "next/head"
 import { Header } from "@/components/landing/header"
 import { Hero } from "@/components/landing/hero"
+import { Scale } from "@/components/landing/scale"
 import { Services } from "@/components/landing/services"
 import { About } from "@/components/landing/about"
 import { Testimonial } from "@/components/landing/testimonial"
@@ -38,6 +39,7 @@ export default function Home() {
       <main className="min-h-screen">
         <Header />
         <Hero />
+        <Scale /> 
         <Services />
         <About />
         <Testimonial />

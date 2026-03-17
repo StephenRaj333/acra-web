@@ -41,6 +41,7 @@ export function About() {
   const isInView = useInView(ref, { once: true, margin: "-100px" })
   const lampInView = useInView(lampRef, { once: true, margin: "0px" })
   const [hoveredValue, setHoveredValue] = useState<number | null>(null)
+  const [isPlaying, setIsPlaying] = useState(false)
   const { resolvedTheme } = useTheme()
   const isDark = resolvedTheme === 'dark'
   
@@ -56,9 +57,9 @@ export function About() {
       <motion.div 
         className="absolute inset-0 z-0 overflow-hidden" 
         ref={lampRef}
-        initial={{ opacity: 0, width: "0px" }}  
-        animate={lampInView ? { opacity: 1, width: "100%" } : {}}
-        transition={{ duration: 1.2, ease: "easeOut" }}
+        initial={{ opacity: 0, scaleX: 0.1, scaleY: 0.4, originX: "50%", originY: "0%" }}
+        animate={lampInView ? { opacity: 1, scaleX: 1, scaleY: 1 } : {}}
+        transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
       >
         <LampContainer 
           className="min-h-[300px] -mt-16"
@@ -93,7 +94,7 @@ export function About() {
 
         {/* Main Content Grid */}
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-          {/* Left - Image with Overlay */}
+          {/* Left - Video Player */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
@@ -103,63 +104,86 @@ export function About() {
             {/* Background Decorations */}
             <div className="absolute -top-6 -left-6 w-48 h-48 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-full blur-3xl" />
             <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-gradient-to-br from-secondary/20 to-primary/20 rounded-full blur-2xl" />
-            
-            {/* Main Image Container */}
+
+            {/* Video Container */}
             <div className="relative rounded-3xl overflow-hidden shadow-2xl shadow-primary/10">
-              <Image
-                src="/images/philosophy.jpg"
-                alt="Team reaching new heights together"
-                width={600}
-                height={500}
-                className="w-full h-[400px] lg:h-[500px] object-cover"
-              />
-              
-              {/* Gradient Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent" />
-              
-              {/* Play Button Overlay */}
-              <motion.button
-                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-20 h-20 rounded-full bg-primary/90 backdrop-blur-sm flex items-center justify-center shadow-2xl"
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <Play className="h-8 w-8 text-primary-foreground ml-1" fill="currentColor" />
-              </motion.button>
-              
-              {/* Bottom Content Card */}
-              <motion.div
-                className="absolute bottom-0 left-0 right-0 p-6 lg:p-8"
-                initial={{ y: 50, opacity: 0 }}
-                animate={isInView ? { y: 0, opacity: 1 } : {}}
-                transition={{ delay: 0.6 }}
-              >
-                <div className="bg-card/80 backdrop-blur-md border border-border rounded-2xl p-5 shadow-xl">
-                  <div className="flex items-start gap-4">
-                    <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
-                      <span className="text-lg font-bold text-primary-foreground">12+</span>
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-foreground">Years of Excellence</h4>
-                      <p className="text-sm text-muted-foreground mt-1">
-                        Delivering transformative digital solutions worldwide
-                      </p>
-                    </div>
+              {isPlaying ? (
+                <iframe
+                  className="w-full h-[400px] lg:h-[500px]"
+                  src="https://www.youtube.com/embed/qp0HIF3SfI4?autoplay=1&rel=0&modestbranding=1"
+                  title="How Great Leaders Inspire Action — Simon Sinek TED Talk"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                />
+              ) : (
+                <>
+                  {/* Thumbnail */}
+                  <Image
+                    src="/images/philosophy.jpg"
+                    alt="Play motivational startup video"
+                    width={600}
+                    height={500}
+                    className="w-full h-[400px] lg:h-[500px] object-cover"
+                  />
+
+                  {/* Dark overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+
+                  {/* Pulsing ring + play button */}
+                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+                    <motion.div
+                      className="absolute inset-0 rounded-full bg-primary/40"
+                      animate={{ scale: [1, 1.6, 1], opacity: [0.6, 0, 0.6] }}
+                      transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
+                    />
+                    <motion.button
+                      onClick={() => setIsPlaying(true)}
+                      className="relative w-20 h-20 rounded-full bg-primary/90 backdrop-blur-sm flex items-center justify-center shadow-2xl border-2 border-white/30"
+                      whileHover={{ scale: 1.12 }}
+                      whileTap={{ scale: 0.95 }}
+                      aria-label="Play motivational video"
+                    >
+                      <Play className="h-8 w-8 text-white ml-1" fill="currentColor" />
+                    </motion.button>
                   </div>
-                </div>
-              </motion.div>
+
+                  {/* Video info card at bottom */}
+                  <motion.div
+                    className="absolute bottom-0 left-0 right-0 p-6 lg:p-8"
+                    initial={{ y: 30, opacity: 0 }}
+                    animate={isInView ? { y: 0, opacity: 1 } : {}}
+                    transition={{ delay: 0.7 }}
+                  >
+                    <div className="bg-black/60 backdrop-blur-md border border-white/10 rounded-2xl p-5 shadow-xl">
+                      <div className="flex items-center gap-4">
+                        <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
+                          <Play className="h-4 w-4 text-white" fill="currentColor" />
+                        </div>
+                        <div>
+                          <h4 className="font-semibold text-white text-sm leading-tight">Start With Why</h4>
+                          <p className="text-xs text-white/60 mt-0.5">How great leaders build movements that last · Simon Sinek · TED</p>
+                        </div>
+                        <div className="ml-auto text-xs text-white/40 font-mono">18:04</div>
+                      </div>
+                    </div>
+                  </motion.div>
+                </>
+              )}  
             </div>
 
             {/* Floating Badge */}
-            <motion.div
-              className="absolute -right-4 top-8 bg-card border border-border rounded-2xl p-4 shadow-xl hidden lg:block"
-              initial={{ x: 50, opacity: 0 }}
-              animate={isInView ? { x: 0, opacity: 1 } : {}}
-              transition={{ delay: 0.8, type: "spring" }}
-              whileHover={{ y: -5 }}
-            >
-              <div className="text-3xl font-bold text-primary">98%</div>
-              <div className="text-xs text-muted-foreground">Client Satisfaction</div>
-            </motion.div>
+            {!isPlaying && (
+              <motion.div
+                className="absolute -right-4 top-8 bg-card border border-border rounded-2xl p-4 shadow-xl hidden lg:block"
+                initial={{ x: 50, opacity: 0 }}
+                animate={isInView ? { x: 0, opacity: 1 } : {}}
+                transition={{ delay: 0.8, type: "spring" }}
+                whileHover={{ y: -5 }}
+              >
+                <div className="text-3xl font-bold text-primary">98%</div>
+                <div className="text-xs text-muted-foreground">Client Satisfaction</div>
+              </motion.div>
+            )}
           </motion.div>
 
           {/* Right - Content */}

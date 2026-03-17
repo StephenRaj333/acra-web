@@ -3,14 +3,11 @@
 import { motion, useInView, useScroll, useTransform, useMotionValue, useSpring } from "framer-motion"
 import { useRef, useState, useEffect } from "react"
 import { Rocket, Target, TrendingUp, Zap, ArrowRight } from "lucide-react"
-import { useTheme } from "next-themes"
 
 export function Testimonial() {
   const ref = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLDivElement>(null)
   const isInView = useInView(ref, { once: true, margin: "-100px" })
-  const { resolvedTheme } = useTheme()
-  const isDark = resolvedTheme === 'dark'
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start end", "end start"]
@@ -67,14 +64,14 @@ export function Testimonial() {
   return (
     <section 
       ref={ref}
-      className="relative py-32 lg:py-40 overflow-hidden bg-gradient-to-br from-muted via-background to-muted"
+      className="relative py-32 lg:py-40 overflow-hidden"
+      style={{ background: "linear-gradient(180deg, #0a0f1e 0%, #0d1529 50%, #0a0f1e 100%)" }}
     >
-      {/* Interactive gradient background that follows mouse - optimized */}
+      {/* Interactive gradient background that follows mouse */}
       <motion.div 
         className="absolute inset-0 pointer-events-none"
         style={{
-          background: `radial-gradient(circle at ${smoothMouseX.get() * 100}% ${smoothMouseY.get() * 100}%, hsl(var(--primary) / 0.06) 0%, transparent 50%)`,
-          willChange: "background"
+          background: `radial-gradient(circle at ${smoothMouseX.get() * 100}% ${smoothMouseY.get() * 100}%, rgba(56,78,255,0.07) 0%, transparent 50%)`,
         }}
       />
 
@@ -83,11 +80,11 @@ export function Testimonial() {
         {/* Large parallax orbs */}
         <motion.div 
           style={{ y: y1, willChange: "transform" }}
-          className="absolute -top-40 -right-40 w-[500px] h-[500px] rounded-full bg-gradient-to-br from-primary/10 to-secondary/5 blur-3xl"
+          className="absolute -top-40 -right-40 w-[500px] h-[500px] rounded-full bg-blue-900/20 blur-3xl"
         />
         <motion.div 
           style={{ y: y2, willChange: "transform" }}
-          className="absolute -bottom-40 -left-40 w-[500px] h-[500px] rounded-full bg-gradient-to-tr from-secondary/10 to-primary/5 blur-3xl"
+          className="absolute -bottom-40 -left-40 w-[500px] h-[500px] rounded-full bg-indigo-900/20 blur-3xl"
         />
         
         {/* Floating shapes */}
@@ -100,7 +97,7 @@ export function Testimonial() {
             rotate: { duration: 20, repeat: Infinity, ease: "linear" },
             y: { duration: 4, repeat: Infinity, ease: "easeInOut" }
           }}
-          className="absolute top-1/4 right-20 w-24 h-24 border-2 border-primary/20 rounded-2xl"
+          className="absolute top-1/4 right-20 w-24 h-24 border-2 border-white/10 rounded-2xl"
         />
         <motion.div
           animate={{ 
@@ -111,14 +108,14 @@ export function Testimonial() {
             rotate: { duration: 25, repeat: Infinity, ease: "linear" },
             scale: { duration: 3, repeat: Infinity, ease: "easeInOut" }
           }}
-          className="absolute bottom-1/4 left-20 w-20 h-20 border-2 border-secondary/20 rounded-full"
+          className="absolute bottom-1/4 left-20 w-20 h-20 border-2 border-white/10 rounded-full"
         />
 
         {/* Animated lines */}
         <svg className="absolute inset-0 w-full h-full" xmlns="http://www.w3.org/2000/svg">
           <motion.line
             x1="0%" y1="30%" x2="100%" y2="70%"
-            stroke="hsl(var(--primary) / 0.1)"
+            stroke="rgba(99,102,241,0.1)"
             strokeWidth="1"
             initial={{ pathLength: 0 }}
             animate={isInView ? { pathLength: 1 } : {}}
@@ -126,7 +123,7 @@ export function Testimonial() {
           />
           <motion.line
             x1="100%" y1="20%" x2="0%" y2="80%"
-            stroke="hsl(var(--secondary) / 0.1)"
+            stroke="rgba(99,102,241,0.08)"
             strokeWidth="1"
             initial={{ pathLength: 0 }}
             animate={isInView ? { pathLength: 1 } : {}}
@@ -135,7 +132,7 @@ export function Testimonial() {
         </svg>
 
         {/* Subtle grid */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,hsl(var(--foreground)/0.02)_1px,transparent_1px),linear-gradient(to_bottom,hsl(var(--foreground)/0.02)_1px,transparent_1px)] bg-[size:4rem_4rem]" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:4rem_4rem]" />
       </div>
 
       <motion.div 
@@ -150,20 +147,20 @@ export function Testimonial() {
           transition={{ duration: 0.6 }}
         >
           <motion.div 
-            className="h-px w-20 bg-gradient-to-r from-transparent via-primary to-transparent"
+            className="h-px w-20 bg-gradient-to-r from-transparent via-indigo-400 to-transparent"
             initial={{ scaleX: 0, opacity: 0 }}
             animate={isInView ? { scaleX: 1, opacity: 1 } : {}}
             transition={{ duration: 1, delay: 0.2 }}
           />
           <motion.span 
-            className="text-xs font-bold uppercase tracking-[0.3em] text-primary"
+            className="text-xs font-bold uppercase tracking-[0.3em] text-indigo-400"
             animate={{ opacity: [0.5, 1, 0.5] }}
             transition={{ duration: 2, repeat: Infinity }}
           >
             Our Promise
           </motion.span>
           <motion.div 
-            className="h-px w-20 bg-gradient-to-r from-transparent via-primary to-transparent"
+            className="h-px w-20 bg-gradient-to-r from-transparent via-indigo-400 to-transparent"
             initial={{ scaleX: 0, opacity: 0 }}
             animate={isInView ? { scaleX: 1, opacity: 1 } : {}}
             transition={{ duration: 1, delay: 0.2 }}
@@ -178,8 +175,8 @@ export function Testimonial() {
                 key={index}
                 className={`inline-block mr-2 sm:mr-3 ${
                   word.highlight 
-                    ? "bg-gradient-to-r from-primary via-secondary to-primary bg-clip-text text-transparent bg-[size:200%_auto] animate-gradient" 
-                    : "text-foreground"
+                    ? "bg-gradient-to-r from-indigo-400 via-blue-400 to-indigo-400 bg-clip-text text-transparent bg-[size:200%_auto] animate-gradient" 
+                    : "text-white"
                 }`}
                 initial={{ opacity: 0, y: 20 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -208,7 +205,7 @@ export function Testimonial() {
               whileTap={{ scale: 0.98 }}
             > 
               <motion.div 
-                className="relative h-full p-6 rounded-2xl overflow-hidden flex flex-col items-start bg-white dark:bg-slate-900"
+                className="relative h-full p-6 rounded-2xl overflow-hidden flex flex-col items-start bg-[#0a0f1e]"
                 animate={{
                   borderColor: hoveredPillar === index ? 'rgba(255, 255, 255, 0.3)' : 'rgba(255, 255, 255, 0.1)',
                 }}
@@ -216,7 +213,7 @@ export function Testimonial() {
                 transition={{ duration: 0.3 }}
                 style={{
                   border: '2px solid transparent',
-                  backgroundImage: `linear-gradient(${isDark ? 'black' : 'white'}, ${isDark ? 'black' : 'white'}), ${pillar.gradient}`,
+                  backgroundImage: `linear-gradient(#0a0f1e, #0a0f1e), ${pillar.gradient}`,
                   backgroundOrigin: 'border-box',
                   backgroundClip: 'padding-box, border-box',
                 }} 
@@ -276,8 +273,7 @@ export function Testimonial() {
 
                 {/* Title */}
                 <motion.h3 
-                  className="font-bold text-lg mb-2 leading-tight"
-                  style={{color: `${isDark ? 'white': 'black'}`}}
+                  className="font-bold text-lg mb-2 leading-tight text-white"
                   animate={{ x: hoveredPillar === index ? 2 : 0 }}
                   transition={{ duration: 0.2 }}
                 >
@@ -286,17 +282,16 @@ export function Testimonial() {
                 
                 {/* Description */}
                 <motion.p
-                  className="text-sm flex-1 mb-4"
+                  className="text-sm flex-1 mb-4 text-slate-400"
                   initial={{ opacity: 0.7 }}
                   animate={{ opacity: hoveredPillar === index ? 1 : 0.7 }}
-                  style={{color: `${isDark ? 'white': 'black'}`}}
                 >
                   {pillar.desc}
                 </motion.p>
 
                 {/* Arrow - Bottom */}
                 <motion.div
-                  className="text-gray-400 dark:text-white/70 mt-auto"
+                  className="text-white/50 mt-auto"
                   animate={{ 
                     x: hoveredPillar === index ? 3 : 0,
                     opacity: hoveredPillar === index ? 1 : 0.7
@@ -327,11 +322,7 @@ export function Testimonial() {
           >
             {/* Button Content */}
             <button
-              className={`px-8 py-6 text-lg font-semibold rounded-full transition-all duration-300 flex items-center justify-center gap-2 ${
-                isDark 
-                  ? 'bg-black text-white' 
-                  : 'bg-white text-gray-900'
-              }`}
+              className={`px-8 py-6 text-lg font-semibold rounded-full transition-all duration-300 flex items-center justify-center gap-2 bg-[#0a0f1e] text-white`}
             >
               <span className="flex items-center justify-center gap-2">
                 Start Your Journey 
