@@ -21,7 +21,7 @@ export function LightRays({
   className = "",
 }: LightRaysProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const animationRef = useRef<number>()
+  const animationRef = useRef<number | null>(null)
   const mouseRef = useRef({ x: 0.5, y: 0.5 })
   const { resolvedTheme } = useTheme()
 
