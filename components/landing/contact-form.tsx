@@ -229,7 +229,7 @@ export function ContactForm() {
               <div className="grid sm:grid-cols-2 gap-5">
                 {/* Name */}
                 <div className="space-y-1.5 group">
-                  <label className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-widest text-muted-foreground group-focus-within:text-primary transition-colors">
+                  <label className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-widest text-foreground">
                     <User className="h-3.5 w-3.5" />
                     Your Name <span className="text-primary">*</span>
                   </label>
@@ -265,7 +265,7 @@ export function ContactForm() {
 
                 {/* Company */}
                 <div className="space-y-1.5 group">
-                  <label className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-widest text-muted-foreground group-focus-within:text-primary transition-colors">
+                  <label className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-widest text-foreground">
                     <Zap className="h-3.5 w-3.5" />
                     Company Name
                   </label>
@@ -291,7 +291,7 @@ export function ContactForm() {
               <div className="grid sm:grid-cols-2 gap-5">
                 {/* Website */}
                 <div className="space-y-1.5 group">
-                  <label className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-widest text-muted-foreground group-focus-within:text-primary transition-colors">
+                  <label className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-widest text-foreground">
                     <Globe className="h-3.5 w-3.5" />
                     Website
                   </label>
@@ -317,7 +317,7 @@ export function ContactForm() {
 
                 {/* Email */}
                 <div className="space-y-1.5 group">
-                  <label className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-widest text-muted-foreground group-focus-within:text-primary transition-colors">
+                  <label className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-widest text-foreground">
                     <Mail className="h-3.5 w-3.5" />
                     Email Address <span className="text-primary">*</span>
                   </label>
@@ -346,7 +346,7 @@ export function ContactForm() {
 
               {/* Interest Dropdown */}
               <div className="space-y-1.5">
-                <label className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
+                <label className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-widest text-foreground">
                   <Zap className="h-3.5 w-3.5" />
                   I Would Like to Discuss <span className="text-primary">*</span>
                 </label>
@@ -362,7 +362,7 @@ export function ContactForm() {
                       {formData.interest === "select" ? "Select a service area..." : formData.interest}
                     </span>
                     <motion.div animate={{ rotate: isDropdownOpen ? 180 : 0 }} transition={{ duration: 0.2 }}>
-                      <ChevronDown className="h-4 w-4 text-muted-foreground" />
+                      <ChevronDown className="h-4 w-4 text-foreground" />
                     </motion.div>
                   </button>
                   {isDropdownOpen && (
@@ -410,7 +410,7 @@ export function ContactForm() {
 
               {/* Phone Input */}
               <div className="space-y-1.5">
-                <label className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
+                <label className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-widest text-foreground">
                   <Phone className="h-3.5 w-3.5" />
                   Phone Number <span className="text-primary">*</span>
                 </label>
@@ -426,7 +426,7 @@ export function ContactForm() {
                     >
                       <CountryFlag code={formData.countryCode.flag} />
                       <span className="text-sm font-semibold text-foreground">{formData.countryCode.code}</span>
-                      <ChevronDown className="h-3.5 w-3.5 text-muted-foreground" />
+                      <ChevronDown className="h-3.5 w-3.5 text-foreground" />
                     </button>
                     <AnimatePresence>
                       {isCountryDropdownOpen && (

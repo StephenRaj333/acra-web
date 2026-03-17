@@ -5,6 +5,7 @@ import { Menu, X } from "lucide-react"
 import { useState } from "react"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { Button } from "@/components/ui/button"
+import { ContactModal } from "@/components/landing/contact-modal"
 
 const navItems = [
   { label: "Services", href: "#services" },
@@ -15,6 +16,7 @@ const navItems = [
 
 export function Header() {
   const [isOpen, setIsOpen] = useState(false)
+  const [modalOpen, setModalOpen] = useState(false)
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     const href = e.currentTarget.getAttribute('href')
@@ -28,7 +30,9 @@ export function Header() {
   }
 
   return (
-    <motion.header
+    <>
+      <ContactModal open={modalOpen} onClose={() => setModalOpen(false)} />
+      <motion.header
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
@@ -84,8 +88,8 @@ export function Header() {
               transition={{ delay: 0.5 }}
               className="hidden md:block"
             >
-              <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">
-                Get Started
+              <Button className="bg-primary cursor-pointer hover:bg-primary/90 text-primary-foreground" onClick={() => setModalOpen(true)}>
+                Talk to An Expert 
               </Button>
             </motion.div>
 
@@ -126,7 +130,7 @@ export function Header() {
               </a>
             ))}
             <div className="px-4 pt-2">
-              <Button className="w-full bg-primary hover:bg-primary/90 text-primary-foreground">
+              <Button className="w-full bg-primary hover:bg-primary/90 text-primary-foreground" onClick={() => { setModalOpen(true); setIsOpen(false) }}>
                 Get Started
               </Button>
             </div>
@@ -134,5 +138,6 @@ export function Header() {
         </motion.nav>
       </div>
     </motion.header>
+    </>
   )
 }
