@@ -162,7 +162,7 @@ export function ContactForm() {
       }}
     >
       {/* Inner card */}
-      <div className="rounded-[calc(2rem-1.5px)] bg-background dark:bg-card px-8 py-10 sm:px-10 sm:py-12 relative">
+      <div className="rounded-[calc(2rem-1.5px)] bg-background dark:bg-card px-3 py-6 sm:px-8 sm:py-10 lg:px-10 lg:py-12 relative">
 
         {/* Soft glow blobs — clipped inside their own wrapper so dropdowns can overflow */}
         <div className="pointer-events-none absolute inset-0 rounded-[calc(2rem-1.5px)] overflow-hidden">

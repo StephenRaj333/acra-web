@@ -40,7 +40,7 @@ export function Contact() {
         <div className="absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.02)_1px,transparent_1px)] dark:bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:60px_60px]" />
       </div>
 
-      <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="relative z-10 mx-auto max-w-7xl px-3 sm:px-6 lg:px-8">
         {/* Header */}
         <motion.div
           className="text-center mb-16"
@@ -52,7 +52,7 @@ export function Contact() {
             className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-primary mb-4"
             initial={{ opacity: 0, y: 10 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ delay: 0.2 }}
+            transition={{ delay: 0.2 }} 
           >
             <span className="w-8 h-px bg-primary" />
             Get Started
@@ -100,16 +100,16 @@ export function Contact() {
               {contactInfo.map((info, index) => (
                 <motion.div
                   key={info.label}
-                  className="group relative p-5 bg-card border border-border rounded-2xl hover:border-primary/50 transition-all duration-300 hover:shadow-lg hover:shadow-primary/5"
+                  className="group relative p-3 sm:p-5 bg-card border border-border rounded-2xl hover:border-primary/50 transition-all duration-300 hover:shadow-lg hover:shadow-primary/5 overflow-hidden"
                   whileHover={{ y: -2 }}
                 >
-                  <div className="flex items-start gap-4">
-                    <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-gradient-to-br from-primary/10 to-secondary/10 flex items-center justify-center group-hover:from-primary/20 group-hover:to-secondary/20 transition-colors">
-                      <info.icon className="h-5 w-5 text-primary" />
+                  <div className="flex items-start gap-3 sm:gap-4">
+                    <div className="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-primary/10 to-secondary/10 flex items-center justify-center group-hover:from-primary/20 group-hover:to-secondary/20 transition-colors">
+                      <info.icon className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
                     </div>
-                    <div>
+                    <div className="min-w-0 flex-1">
                       <p className="text-sm text-muted-foreground font-medium">{info.label}</p>
-                      <p className="text-foreground font-semibold mt-0.5">{info.value}</p>
+                      <p className="text-foreground font-semibold mt-0.5 break-all">{info.value}</p>
                     </div>
                   </div>
                 </motion.div>

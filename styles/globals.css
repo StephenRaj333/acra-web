@@ -147,6 +147,7 @@
 /* Smooth scrolling */
 html {
   scroll-behavior: smooth;
+  overflow-x: clip;
 }
 
 /* Gradient text animation */

@@ -195,9 +195,9 @@ export function Testimonial() {
 {/* Interactive Pillar Cards - Grid Design */}
         <motion.div 
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto mb-16"
-          initial={{ opacity: 0, y: 40 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8, delay: 1.5 }}
+          // initial={{ opacity: 0, y: 40 }}
+          // animate={isInView ? { opacity: 1, y: 0 } : {}}
+          // transition={{ duration: 0.8, delay: 1.5 }}
         >
           {pillars?.map((pillar, index) => ( 
             <motion.div 
