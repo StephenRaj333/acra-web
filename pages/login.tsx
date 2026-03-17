@@ -95,103 +95,133 @@ export default function LoginPage() {
 
       <div className="relative z-10 w-full max-w-6xl">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-          {/* Left side - Illustration */}
+          {/* Left side - Branding animation */}
           <motion.div
-            className="hidden lg:flex justify-center items-center"
+            className="hidden lg:flex flex-col justify-center items-center relative h-full min-h-[560px] select-none"
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <svg
-              viewBox="0 0 500 500"
-              className="w-full h-auto max-w-lg"
-              xmlns="http://www.w3.org/2000/svg"
+            {/* Dot grid background */}
+            <div
+              className="absolute inset-0"
+              style={{
+                backgroundImage: "radial-gradient(circle, color-mix(in oklch, var(--primary) 18%, transparent) 1px, transparent 1px)",
+                backgroundSize: "28px 28px",
+              }}
+            />
+            {/* Radial fade over grid */}
+            <div
+              className="absolute inset-0"
+              style={{ background: "radial-gradient(ellipse 70% 70% at 50% 50%, transparent 30%, var(--background) 100%)" }}
+            />
+
+            {/* Outer orbit ring */}
+            <motion.div
+              className="absolute w-[340px] h-[340px] rounded-full"
+              style={{ border: "1px solid color-mix(in oklch, var(--primary) 25%, transparent)" }}
+              animate={{ rotate: 360 }}
+              transition={{ duration: 32, repeat: Infinity, ease: "linear" }}
             >
-              {/* Animated background circle */}
-              <motion.circle
-                cx="250"
-                cy="250"
-                r="200"
-                fill="none"
-                stroke="url(#gradient)"
-                strokeWidth="2"
-                opacity="0.3"
-                animate={{ rotate: 360 }}
-                transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+              <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-primary shadow-[0_0_12px_4px_color-mix(in_oklch,var(--primary)_60%,transparent)]" />
+            </motion.div>
+
+            {/* Middle orbit ring */}
+            <motion.div
+              className="absolute w-[220px] h-[220px] rounded-full"
+              style={{ border: "1px solid color-mix(in oklch, var(--secondary) 25%, transparent)" }}
+              animate={{ rotate: -360 }}
+              transition={{ duration: 22, repeat: Infinity, ease: "linear" }}
+            >
+              <div className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-secondary shadow-[0_0_10px_3px_color-mix(in_oklch,var(--secondary)_60%,transparent)]" />
+            </motion.div>
+
+            {/* Inner orbit ring */}
+            <motion.div
+              className="absolute w-[130px] h-[130px] rounded-full"
+              style={{ border: "1px dashed color-mix(in oklch, var(--primary) 30%, transparent)" }}
+              animate={{ rotate: 360 }}
+              transition={{ duration: 14, repeat: Infinity, ease: "linear" }}
+            />
+
+            {/* Central logo mark */}
+            <motion.div
+              className="relative z-10 flex flex-col items-center"
+              animate={{ y: [0, -10, 0] }}
+              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+            >
+              {/* Glow */}
+              <div
+                className="absolute -inset-10 rounded-full blur-3xl"
+                style={{ background: "radial-gradient(circle, color-mix(in oklch, var(--primary) 22%, transparent), transparent 70%)" }}
               />
-
-              {/* Gradient definition */}
-              <defs>
-                <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="var(--color-primary, #3b82f6)" />
-                  <stop offset="100%" stopColor="var(--color-secondary, #ec4899)" />
-                </linearGradient>
-              </defs>
-
-              {/* Animated lock icon */}
-              <motion.g
-                animate={{ y: [0, -10, 0] }}
-                transition={{ duration: 3, repeat: Infinity }}
+              {/* Triangle logo */}
+              <svg width="80" height="80" viewBox="0 0 32 32" fill="none" className="relative mb-3 drop-shadow-2xl">
+                <defs>
+                  <linearGradient id="lgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="var(--primary)" />
+                    <stop offset="100%" stopColor="var(--secondary)" />
+                  </linearGradient>
+                </defs>
+                <path d="M16 2L2 28h28L16 2z" stroke="url(#lgGrad)" strokeWidth="2.5" fill="none" />
+                <path d="M16 10L10 24h12L16 10z" fill="url(#lgGrad)" />
+              </svg>
+              <span
+                className="text-4xl font-black tracking-tight leading-none"
+                style={{ background: "linear-gradient(135deg, var(--primary), var(--secondary))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}
               >
-                {/* Lock body */}
-                <rect x="185" y="200" width="130" height="150" rx="10" fill="none" stroke="currentColor" strokeWidth="8" className="text-primary" />
+                AKRA
+              </span>
+              <span className="text-[11px] font-bold uppercase tracking-[0.35em] text-muted-foreground mt-1.5">
+                Consultants
+              </span>
+            </motion.div>
 
-                {/* Lock shackle */}
-                <path
-                  d="M 210 200 Q 210 120 250 120 Q 290 120 290 200"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="8"
-                  className="text-secondary"
-                />
+            {/* Floating metric cards */}
+            {[
+              { label: "Client Retention", value: "98%", x: -130, y: -70, delay: 0.2 },
+              { label: "Projects Delivered", value: "150+", x: 125, y: -50, delay: 0.5 },
+              { label: "Years of Excellence", value: "12+", x: -120, y: 105, delay: 0.8 },
+              { label: "Industries Served", value: "20+", x: 118, y: 95, delay: 1.1 },
+            ].map((stat) => (
+              <motion.div
+                key={stat.label}
+                className="absolute z-10 rounded-2xl px-4 py-3 shadow-xl"
+                style={{
+                  left: `calc(50% + ${stat.x}px)`,
+                  top: `calc(50% + ${stat.y}px)`,
+                  transform: "translate(-50%, -50%)",
+                  background: "color-mix(in oklch, var(--card) 85%, transparent)",
+                  border: "1px solid color-mix(in oklch, var(--border) 80%, transparent)",
+                  backdropFilter: "blur(12px)",
+                }}
+                initial={{ opacity: 0, scale: 0.75 }}
+                animate={{ opacity: 1, scale: 1, y: [0, -7, 0] }}
+                transition={{
+                  opacity: { delay: stat.delay + 0.6, duration: 0.4 },
+                  scale: { delay: stat.delay + 0.6, duration: 0.4 },
+                  y: { delay: stat.delay, duration: 4 + stat.delay, repeat: Infinity, ease: "easeInOut" },
+                }}
+              >
+                <p
+                  className="text-xl font-black leading-none"
+                  style={{ background: "linear-gradient(135deg, var(--primary), var(--secondary))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}
+                >
+                  {stat.value}
+                </p>
+                <p className="text-[10px] text-muted-foreground font-semibold mt-0.5 whitespace-nowrap uppercase tracking-wide">{stat.label}</p>
+              </motion.div>
+            ))}
 
-                {/* Lock keyhole */}
-                <circle cx="250" cy="260" r="12" fill="currentColor" className="text-primary" opacity="0.8" />
-                <rect x="245" y="275" width="10" height="35" fill="currentColor" className="text-primary" opacity="0.8" />
-
-                {/* Animated particles around lock */}
-                {[...Array(6)].map((_, i) => (
-                  <motion.circle
-                    key={i}
-                    cx="250"
-                    cy="100"
-                    r="4"
-                    fill="currentColor"
-                    className="text-primary"
-                    animate={{
-                      cx: [250, 250 + Math.cos((i / 6) * Math.PI * 2) * 120, 250],
-                      cy: [100, 100 + Math.sin((i / 6) * Math.PI * 2) * 120, 100],
-                      opacity: [1, 0.3, 1],
-                    }}
-                    transition={{
-                      duration: 4,
-                      repeat: Infinity,
-                      delay: i * 0.3,
-                    }}
-                  />
-                ))}
-              </motion.g>
-
-              {/* Animated dots */}
-              <motion.circle
-                cx="100"
-                cy="150"
-                r="3"
-                fill="currentColor"
-                className="text-secondary"
-                animate={{ opacity: [0.3, 1, 0.3] }}
-                transition={{ duration: 2, repeat: Infinity }}
-              />
-              <motion.circle
-                cx="400"
-                cy="350"
-                r="2"
-                fill="currentColor"
-                className="text-primary"
-                animate={{ opacity: [1, 0.3, 1] }}
-                transition={{ duration: 3, repeat: Infinity }}
-              />
-            </svg>
+            {/* Bottom tagline */}
+            <motion.p
+              className="absolute bottom-6 text-[11px] font-semibold uppercase tracking-[0.3em] text-muted-foreground"
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 1.6 }}
+            >
+              Strategy · Technology · Growth
+            </motion.p>
           </motion.div>
 
           {/* Right side - Login form */}
@@ -354,7 +384,7 @@ export default function LoginPage() {
                 animate={{ opacity: 1 }}
                 transition={{ delay: 1 }}
               >
-                <p className="font-semibold text-foreground mb-2">Demo Credentials:</p>
+                <p className="font-semibold text-foreground mb-2">Credentials:</p>
                 <p>Email: <code className="bg-muted/50 px-2 py-1 rounded text-primary">akra@admin.com</code></p>
                 <p>Password: <code className="bg-muted/50 px-2 py-1 rounded text-primary">akra</code></p>
               </motion.div>

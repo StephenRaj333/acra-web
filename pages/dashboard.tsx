@@ -1,7 +1,7 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { LogOut, Search, ChevronUp, ChevronDown, Loader } from "lucide-react"
+import { LogOut, Search, Loader } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { useRouter } from "next/router"
@@ -17,9 +17,6 @@ interface ContactData {
   website?: string
   [key: string]: any
 }   
-
-type SortField = keyof ContactData
-type SortOrder = "asc" | "desc"
 
 // Column name mappings
 const columnNames: Record<string, string> = {
@@ -63,8 +60,6 @@ export default function DashboardPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState("")
   const [searchQuery, setSearchQuery] = useState("")
-  const [sortField, setSortField] = useState<SortField>("name")
-  const [sortOrder, setSortOrder] = useState<SortOrder>("asc")
 
   useEffect(() => {
     fetchData()
@@ -100,30 +95,8 @@ export default function DashboardPage() {
     )
   })
 
-  // Sort data
-  const sortedData = [...filteredData].sort((a, b) => {
-    const aValue = a[sortField] ?? ""
-    const bValue = b[sortField] ?? ""
-
-    if (typeof aValue === "string" && typeof bValue === "string") {
-      return sortOrder === "asc"
-        ? aValue.localeCompare(bValue)
-        : bValue.localeCompare(aValue)
-    }
-
-    return sortOrder === "asc"
-      ? String(aValue).localeCompare(String(bValue))
-      : String(bValue).localeCompare(String(aValue))
-  })
-
-  const handleSort = (field: SortField) => {
-    if (sortField === field) {
-      setSortOrder(sortOrder === "asc" ? "desc" : "asc")
-    } else {
-      setSortField(field)
-      setSortOrder("asc")
-    }
-  }
+  // Sort by id descending (latest first)
+  const sortedData = [...filteredData].sort((a, b) => (b.id ?? 0) - (a.id ?? 0))
 
   const columns = data.length > 0 ? Object.keys(data[0] || {}) : []
 
@@ -136,9 +109,13 @@ export default function DashboardPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
           >
-            <h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-              AKRA Dashboard
-            </h1>
+            <div className="flex items-center gap-2">
+              <svg width="28" height="28" viewBox="0 0 32 32" fill="none" className="text-primary">
+                <path d="M16 2L2 28h28L16 2z" stroke="currentColor" strokeWidth="2.5" fill="none" />
+                <path d="M16 10L10 24h12L16 10z" fill="currentColor" />
+              </svg>
+              <span className="text-xl font-bold tracking-tight text-foreground">AKRA</span>
+            </div>
           </motion.div>
           <Button
             onClick={handleLogout}
@@ -162,7 +139,7 @@ export default function DashboardPage() {
           <div className="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
             <div>
               <h2 className="text-3xl font-bold text-foreground mb-2">
-                Contacts Data
+                Akra Leads  
               </h2>
               <p className="text-muted-foreground">
                 Manage and view all contact submissions
@@ -235,11 +212,12 @@ export default function DashboardPage() {
               </div>
 
               {/* Table */}
-              <div className="overflow-x-auto" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+              <div className="overflow-x-auto table-scroll" style={{ scrollbarColor: 'var(--primary) transparent', scrollbarWidth: 'thin' }}>
                 <style>{`
-                  div::-webkit-scrollbar { 
-                    display: none;
-                  }
+                  .table-scroll::-webkit-scrollbar { height: 6px; width: 6px; }
+                  .table-scroll::-webkit-scrollbar-track { background: transparent; }
+                  .table-scroll::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 9999px; }
+                  .table-scroll::-webkit-scrollbar-thumb:hover { background: var(--secondary); }
                 `}</style>
                 <table className="w-full">
                   <thead>
@@ -247,19 +225,9 @@ export default function DashboardPage() {
                       {columns.map((column) => (
                         <th
                           key={column}
-                          onClick={() => handleSort(column as SortField)}
-                          className="px-6 py-4 text-left text-sm font-semibold text-foreground cursor-pointer hover:bg-muted/70 transition-colors"
+                          className="px-6 py-4 text-left text-sm font-semibold text-foreground"
                         >
-                          <div className="flex items-center gap-2">
-                            <span>{columnNames[column] || column.charAt(0).toUpperCase() + column.slice(1)}</span>
-                            {sortField === column && (  
-                              sortOrder === "asc" ? (
-                                <ChevronUp className="h-4 w-4 text-primary" />
-                              ) : (
-                                <ChevronDown className="h-4 w-4 text-primary" />
-                              )
-                            )}
-                          </div>
+                          {columnNames[column] || column.charAt(0).toUpperCase() + column.slice(1)}
                         </th>
                       ))}
                     </tr>
