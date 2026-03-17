@@ -34,7 +34,7 @@ export function SplashCursor({
   BACK_COLOR = { r: 0, g: 0, b: 0 },
   TRANSPARENT = true
 }: SplashCursorProps) {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const canvasRef = useRef<any>(null); 
   const animationFrameId = useRef<number | null>(null);
 
   useEffect(() => {
@@ -648,6 +648,7 @@ export function SplashCursor({
     }
 
     function resizeCanvas() {
+      if (!canvas) return false
       const width = scaleByPixelRatio(canvas.clientWidth);
       const height = scaleByPixelRatio(canvas.clientHeight);
       if (canvas.width !== width || canvas.height !== height) {

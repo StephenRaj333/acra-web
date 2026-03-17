@@ -99,7 +99,7 @@ export function LightRays({
       angle: number
       width: number
       length: number
-      useSecondary: boolean
+      colorIndex: number
       phase: number
       swayAmount: number
     }> = []
