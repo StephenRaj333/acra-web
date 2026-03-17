@@ -1,6 +1,6 @@
 "use client"
 
-import { motion, useInView, useScroll, useTransform } from "framer-motion"
+import { motion, useInView, useScroll, useTransform, type MotionValue } from "framer-motion"
 import { useRef, useState, useEffect } from "react"
 import { Globe, Briefcase, CheckCircle2, TrendingUp } from "lucide-react"
 
@@ -89,11 +89,15 @@ function RippleRing({
 
 function StatPill({
   stat,
-  isInView,
+  motionX,
+  motionOpacity,
+  motionFilter,
   arcRadius,
 }: {
   stat: (typeof stats)[0]
-  isInView: boolean
+  motionX: MotionValue<number>
+  motionOpacity: MotionValue<number>
+  motionFilter: MotionValue<string>
   arcRadius: number
 }) {
   const r = arcRadius
@@ -118,14 +122,9 @@ function StatPill({
         style={{
           background: "linear-gradient(90deg, rgba(255, 255, 255, .2), rgba(255, 255, 255, 0) 50%, rgba(255, 255, 255, .2))",
           border: "1px solid rgba(255,255,255,0.18)",
-        }}
-        initial={{ opacity: 0, scale: 0.7 }}
-        animate={isInView ? { opacity: 1, scale: 1 } : {}}
-        transition={{
-          delay: stat.delay + 0.5,
-          duration: 0.6,
-          type: "spring",
-          stiffness: 200,
+          x: motionX,
+          opacity: motionOpacity,
+          filter: motionFilter,
         }}
         whileHover={{
           scale: 1.06,
@@ -185,9 +184,19 @@ export function Scale() {
     target: ref,
     offset: ["start start", "end end"],
   })
+
+  // Scroll progress tracking section entry — used for pill fly-in (desktop only)
+  const { scrollYProgress: entryProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "center center"],
+  })
+  const leftX  = useTransform(entryProgress, [0.05, 0.85], [-700, 0])
+  const rightX = useTransform(entryProgress, [0.05, 0.85], [ 700, 0])
+  const pillOpacity = useTransform(entryProgress, [0.05, 0.65], [0, 1])
+  const pillBlur = useTransform(entryProgress, [0.05, 0.75], ["blur(18px)", "blur(0px)"])
  
   const centralScale = useTransform(scrollYProgress, [0.1, 0.4], [0.85, 1])
-
+ 
   return (
     <section
       ref={ref}
@@ -347,9 +356,20 @@ export function Scale() {
           </motion.div>
 
           {/* Stat pills — arc-positioned, desktop (≥991px) only */}
-          {isDesktop && stats.map((stat) => (
-            <StatPill key={stat.value} stat={stat} isInView={isInView} arcRadius={arcRadius} />
-          ))}
+          {/* Pills on left (angle > 90°) fly from left; pills on right fly from right */}
+          {isDesktop && stats.map((stat) => {
+            const isLeft = Math.cos((stat.angle * Math.PI) / 180) < 0
+            return (
+              <StatPill
+                key={stat.value}
+                stat={stat}
+                motionX={isLeft ? leftX : rightX}
+                motionOpacity={pillOpacity}
+                motionFilter={pillBlur}
+                arcRadius={arcRadius}
+              />
+            )
+          })}
         </div>
 
         {/* Below 991px: 2-column stat grid, sits below the circles */}
