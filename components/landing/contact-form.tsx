@@ -117,7 +117,7 @@ export function ContactForm() {
       setIsLoading(true)
 
       // Post to backend API
-      const backendUrl = "http://localhost:8080" 
+      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8080"
       await axios.post(`${backendUrl}/api/contact`, { 
         name: formData.name,
         company: formData.company,
