@@ -3,7 +3,6 @@
 import { motion, AnimatePresence } from "framer-motion"
 import { useState } from "react"
 import { ArrowRight, CheckCircle, ChevronDown, User, Mail, Phone, Globe, Zap } from "lucide-react"
-import { Button } from "@/components/ui/button"
 import axios from "axios"
 
 const requirementOptions = [
