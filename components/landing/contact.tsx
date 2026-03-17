@@ -101,9 +101,6 @@ export function Contact() {
                 <motion.div
                   key={info.label}
                   className="group relative p-5 bg-card border border-border rounded-2xl hover:border-primary/50 transition-all duration-300 hover:shadow-lg hover:shadow-primary/5"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={isInView ? { opacity: 1, y: 0 } : {}}
-                  transition={{ delay: 0.4 + index * 0.1 }}
                   whileHover={{ y: -2 }}
                 >
                   <div className="flex items-start gap-4">

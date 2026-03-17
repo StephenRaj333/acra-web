@@ -44,21 +44,21 @@ export function About() {
   const { resolvedTheme } = useTheme()
   const isDark = resolvedTheme === 'dark'
   
-  // Gradient colors for Lamp container - same for both themes
+  // Gradient colors for Lamp container - professional and clean
   const lampGradient = {
-    from: "#FF0505",
-    to: "#FF6B35",
+    from: "#3366FF",
+    to: "#6B5AFF",
   }
   
   return (
     <section id="about" className="relative overflow-hidden bg-background py-16 lg:py-24" ref={ref}>
       {/* Lamp Container with theme-adaptable colors */}
       <motion.div 
-        className="absolute inset-0 z-0" 
+        className="absolute inset-0 z-0 overflow-hidden" 
         ref={lampRef}
-        initial={{ opacity: 0 }}  
-        animate={lampInView ? { opacity: 1 } : {}}
-        transition={{ duration: 0.8 }}
+        initial={{ opacity: 0, width: "0px" }}  
+        animate={lampInView ? { opacity: 1, width: "100%" } : {}}
+        transition={{ duration: 1.2, ease: "easeOut" }}
       >
         <LampContainer 
           className="min-h-[300px] -mt-16"

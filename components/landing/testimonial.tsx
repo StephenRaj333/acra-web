@@ -3,7 +3,6 @@
 import { motion, useInView, useScroll, useTransform, useMotionValue, useSpring } from "framer-motion"
 import { useRef, useState, useEffect } from "react"
 import { Rocket, Target, TrendingUp, Zap, ArrowRight } from "lucide-react"
-import { Button } from "@/components/ui/button"
 import { useTheme } from "next-themes"
 
 export function Testimonial() {
@@ -17,17 +16,17 @@ export function Testimonial() {
     offset: ["start end", "end start"]
   })
 
-  // Parallax transforms
-  const y1 = useTransform(scrollYProgress, [0, 1], [100, -100])
-  const y2 = useTransform(scrollYProgress, [0, 1], [-50, 50])
-  const scale = useTransform(scrollYProgress, [0, 0.5, 1], [0.8, 1, 0.8])
-  const opacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0.3, 1, 1, 0.3])
+  // Simplified parallax transforms for better performance
+  const y1 = useTransform(scrollYProgress, [0, 1], [50, -50], { clamp: false })
+  const y2 = useTransform(scrollYProgress, [0, 1], [-25, 25], { clamp: false })
+  const scale = useTransform(scrollYProgress, [0, 0.5, 1], [0.9, 1, 0.9])
+  const opacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0.5, 1, 1, 0.5])
 
-  // Mouse tracking for interactive gradient
-  const mouseX = useMotionValue(0)
-  const mouseY = useMotionValue(0)
-  const smoothMouseX = useSpring(mouseX, { stiffness: 300, damping: 30 })
-  const smoothMouseY = useSpring(mouseY, { stiffness: 300, damping: 30 })
+  // Mouse tracking for interactive gradient (simplified)
+  const mouseX = useMotionValue(50)
+  const mouseY = useMotionValue(50)
+  const smoothMouseX = useSpring(mouseX, { stiffness: 100, damping: 20 })
+  const smoothMouseY = useSpring(mouseY, { stiffness: 100, damping: 20 })
 
   const [hoveredPillar, setHoveredPillar] = useState<number | null>(null)
 
@@ -70,11 +69,12 @@ export function Testimonial() {
       ref={ref}
       className="relative py-32 lg:py-40 overflow-hidden bg-gradient-to-br from-muted via-background to-muted"
     >
-      {/* Interactive gradient background that follows mouse */}
+      {/* Interactive gradient background that follows mouse - optimized */}
       <motion.div 
         className="absolute inset-0 pointer-events-none"
         style={{
-          background: `radial-gradient(circle at ${smoothMouseX.get() * 100}% ${smoothMouseY.get() * 100}%, hsl(var(--primary) / 0.08) 0%, transparent 50%)`
+          background: `radial-gradient(circle at ${smoothMouseX.get() * 100}% ${smoothMouseY.get() * 100}%, hsl(var(--primary) / 0.06) 0%, transparent 50%)`,
+          willChange: "background"
         }}
       />
 
@@ -82,11 +82,11 @@ export function Testimonial() {
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         {/* Large parallax orbs */}
         <motion.div 
-          style={{ y: y1 }}
+          style={{ y: y1, willChange: "transform" }}
           className="absolute -top-40 -right-40 w-[500px] h-[500px] rounded-full bg-gradient-to-br from-primary/10 to-secondary/5 blur-3xl"
         />
         <motion.div 
-          style={{ y: y2 }}
+          style={{ y: y2, willChange: "transform" }}
           className="absolute -bottom-40 -left-40 w-[500px] h-[500px] rounded-full bg-gradient-to-tr from-secondary/10 to-primary/5 blur-3xl"
         />
         
@@ -140,7 +140,7 @@ export function Testimonial() {
 
       <motion.div 
         className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8"
-        style={{ scale, opacity }}
+        style={{ scale, opacity, willChange: "transform, opacity" }} 
       >
         {/* Section Label */}
         <motion.div
@@ -203,13 +203,10 @@ export function Testimonial() {
             <motion.div 
               key={pillar.label}
               className="group relative cursor-pointer"
-              initial={{ opacity: 0, y: 30 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: 1.6 + index * 0.1 }}
               onHoverStart={() => setHoveredPillar(index)}
               onHoverEnd={() => setHoveredPillar(null)}
               whileTap={{ scale: 0.98 }}
-            >
+            > 
               <motion.div 
                 className="relative h-full p-6 rounded-2xl overflow-hidden flex flex-col items-start bg-white dark:bg-slate-900"
                 animate={{
