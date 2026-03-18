@@ -244,7 +244,7 @@ export default function DashboardPage() {
                         >
                           {columns.map((column) => {  
                             const isDateField = ['createdAt', 'created_at', 'updatedAt', 'updated_at'].includes(column);
-                            const value = isDateField ? formatDateTime(row[column]) : String(row[column] || "-");
+                            const value = column === 'id' ? String(idx + 1) : isDateField ? formatDateTime(row[column]) : String(row[column] || "-");
                             return (
                               <td
                                 key={`${idx}-${column}`}
