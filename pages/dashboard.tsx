@@ -1,7 +1,7 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { LogOut, Search, Loader } from "lucide-react"
+import { LogOut, Search, Loader, Trash2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { useRouter } from "next/router"
@@ -61,6 +61,8 @@ export default function DashboardPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState("")
   const [searchQuery, setSearchQuery] = useState("")
+  const [selectedIds, setSelectedIds] = useState<Set<number>>(new Set())
+  const [isDeleting, setIsDeleting] = useState(false)
 
   useEffect(() => {
     fetchData()
@@ -86,6 +88,40 @@ export default function DashboardPage() {
 
   const handleLogout = () => {
     router.push("/login")
+  }
+
+  const toggleSelect = (id: number) => {
+    setSelectedIds((prev) => {
+      const next = new Set(prev)
+      next.has(id) ? next.delete(id) : next.add(id)
+      return next
+    })
+  }
+
+  const toggleSelectAll = () => {
+    if (selectedIds.size === sortedData.length) {
+      setSelectedIds(new Set())
+    } else {
+      setSelectedIds(new Set(sortedData.map((r) => r.id as number)))
+    }
+  }
+
+  const deleteSelected = async () => {
+    if (selectedIds.size === 0) return
+    setIsDeleting(true)
+    try {
+      await Promise.all(
+        Array.from(selectedIds).map((id) =>
+          fetch(`https://acra-web-3k2w.vercel.app/api/contact/${id}`, { method: "DELETE" })
+        )
+      )
+      setSelectedIds(new Set())
+      await fetchData()
+    } catch (err: any) {
+      setError(err.message || "Failed to delete")
+    } finally {
+      setIsDeleting(false)
+    }
   }
 
   // Filter data based on search query
@@ -147,22 +183,37 @@ export default function DashboardPage() {
               </p>  
             </div> 
 
-            {/* Search bar on the right */}
-            <motion.div
-              className="relative sm:w-80"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-            >
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-              <input
-                type="text"
-                placeholder="Search by any field..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full h-12 bg-card border border-border text-foreground placeholder:text-muted-foreground/50 rounded-xl px-4 pl-12 transition-all duration-300 outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
-              />
-            </motion.div>
+            {/* Search bar + delete button on the right */}
+            <div className="flex items-center gap-3">
+              {selectedIds.size > 0 && (
+                <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}>
+                  <Button
+                    onClick={deleteSelected}
+                    disabled={isDeleting}
+                    variant="outline"
+                    className="h-12 px-4 border-red-500/50 text-red-500 hover:bg-red-500/10 hover:border-red-500 flex items-center gap-2"
+                  >
+                    {isDeleting ? <Loader className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
+                    Delete ({selectedIds.size})
+                  </Button>
+                </motion.div>
+              )}
+              <motion.div
+                className="relative sm:w-80"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+              >
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                <input
+                  type="text"
+                  placeholder="Search by any field..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full h-12 bg-card border border-border text-foreground placeholder:text-muted-foreground/50 rounded-xl px-4 pl-12 transition-all duration-300 outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
+                />
+              </motion.div>
+            </div>
           </div>
 
           {/* Error message */}
@@ -223,6 +274,14 @@ export default function DashboardPage() {
                 <table className="w-full">
                   <thead>
                     <tr className="border-b border-border bg-muted/50">
+                      <th className="px-4 py-4 w-10">
+                        <input
+                          type="checkbox"
+                          checked={sortedData.length > 0 && selectedIds.size === sortedData.length}
+                          onChange={toggleSelectAll}
+                          className="h-4 w-4 rounded border-border accent-primary cursor-pointer"
+                        />
+                      </th>
                       {columns.map((column) => (
                         <th
                           key={column}
@@ -238,11 +297,21 @@ export default function DashboardPage() {
                       sortedData.map((row, idx) => (
                         <motion.tr
                           key={idx}
-                          className="border-b border-border hover:bg-muted/30 transition-colors"
+                          className={`border-b border-border hover:bg-muted/30 transition-colors ${
+                            selectedIds.has(row.id as number) ? "bg-primary/5" : ""
+                          }`}
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
                           transition={{ delay: idx * 0.02 }}
                         >
+                          <td className="px-4 py-4">
+                            <input
+                              type="checkbox"
+                              checked={selectedIds.has(row.id as number)}
+                              onChange={() => toggleSelect(row.id as number)}
+                              className="h-4 w-4 rounded border-border accent-primary cursor-pointer"
+                            />
+                          </td>
                           {columns.map((column) => {  
                             const isDateField = ['createdAt', 'created_at', 'updatedAt', 'updated_at'].includes(column);
                             const value = column === 'id' ? String(idx + 1) : isDateField ? formatDateTime(row[column]) : String(row[column] || "-");
@@ -262,7 +331,7 @@ export default function DashboardPage() {
                     ) : (
                       <tr>
                         <td
-                          colSpan={columns.length}
+                          colSpan={columns.length + 1}
                           className="px-6 py-8 text-center text-muted-foreground"
                         >
                           No results found for "{searchQuery}"
